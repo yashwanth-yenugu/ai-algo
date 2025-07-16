@@ -1,9 +1,11 @@
-import { Hono } from 'hono'
+import { Hono } from 'hono';
 
-const app = new Hono()
+let globalCounter = 0;
+const app = new Hono();
 
 app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+  globalCounter++;
+  return c.json({ counter: globalCounter });
+});
 
-export default app
+export default app;
