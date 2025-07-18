@@ -29,6 +29,7 @@
     "@nestjs/swagger": "^11.2.0",
     "breezeconnect": "^1.0.29",
     "class-validator": "^0.14.2",
+    "express": "^5.1.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
