@@ -1,17 +1,26 @@
-FROM oven/bun
+# Use the official Node.js image as the base image
+FROM node:22
 
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-COPY package.json .
-COPY bun.lock .
+# Copy package.json to the working directory
+COPY package.json ./
 
-RUN bun install --production
+# Copy pnpm yaml files to the working directory
+COPY pnpm*.yaml ./
 
-COPY src src
-COPY tsconfig.json .
-# COPY public public
+# Install the application dependencies
+RUN pnpm install --frozen-lockfile
 
-ENV NODE_ENV production
-CMD ["bun", "src/index.ts"]
+# Copy the rest of the application files
+COPY . .
 
+# Build the NestJS application
+RUN pnpm run build
+
+# Expose the application port
 EXPOSE 3000
+
+# Command to run the application
+CMD ["node", "dist/main"]
