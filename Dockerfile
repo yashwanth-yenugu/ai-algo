@@ -10,6 +10,9 @@ COPY package.json ./
 # Copy pnpm yaml files to the working directory
 COPY pnpm*.yaml ./
 
+# Enable pnpm
+RUN corepack enable pnpm
+
 # Install the application dependencies
 RUN pnpm install --frozen-lockfile
 
