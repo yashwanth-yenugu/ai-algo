@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -8,5 +9,15 @@ export class AppController {
   @Get()
   ping() {
     return this.appService.ping();
+  }
+
+  @Get('/login')
+  login(@Res() res: Response) {
+    return this.appService.login(res);
+  }
+
+  @Post('/callback')
+  loginCallback(@Body() body: { API_Session: string }) {
+    return { success: true, apiSession: body.API_Session };
   }
 }
