@@ -1,32 +1,24 @@
-# Use the official Node.js image as the base image
-FROM node:22
+# Multi-stage build for minimal RAM footprint
+FROM node:22-alpine AS builder
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
-
-# Copy package.json to the working directory
-COPY package.json ./
-
-# Copy pnpm yaml files to the working directory
-COPY pnpm*.yaml ./
-
-# Enable pnpm
+WORKDIR /app
 RUN corepack enable pnpm
 
-# Install pm2
-RUN npm install pm2 -g
-
-# Install the application dependencies
+COPY package.json pnpm*.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# Copy the rest of the application files
 COPY . .
-
-# Build the NestJS application
 RUN pnpm run build
 
-# Expose the application port
-EXPOSE 3000
+FROM node:22-alpine
+WORKDIR /app
 
-# Command to run the application
+RUN corepack enable pnpm && npm install -g pm2
+
+COPY package.json pnpm*.yaml ./
+RUN pnpm install --frozen-lockfile --prod && pnpm store prune
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3000
 CMD ["pm2-runtime", "dist/main.js"]
