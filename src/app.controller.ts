@@ -20,4 +20,9 @@ export class AppController {
   loginCallback(@Body() body: { API_Session: string }) {
     return { success: true, apiSession: body.API_Session };
   }
+
+  @Get('/health')
+  health() {
+    return { status: 'ok', timestamp: new Date().toISOString() };
+  }
 }
