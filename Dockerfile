@@ -13,6 +13,9 @@ COPY pnpm*.yaml ./
 # Enable pnpm
 RUN corepack enable pnpm
 
+# Install pm2
+RUN pnpm add -g pm2
+
 # Install the application dependencies
 RUN pnpm install --frozen-lockfile
 
@@ -26,4 +29,4 @@ RUN pnpm run build
 EXPOSE 3000
 
 # Command to run the application
-CMD ["node", "dist/main"]
+CMD ["pm2-runtime", "dist/main"]
