@@ -14,7 +14,7 @@ COPY pnpm*.yaml ./
 RUN corepack enable pnpm
 
 # Install pm2
-RUN pnpm add -g pm2
+RUN npm install pm2 -g
 
 # Install the application dependencies
 RUN pnpm install --frozen-lockfile
