@@ -8,7 +8,6 @@ export class BreezeConnectController {
   @Get('/get-funds')
   async getFunds(@Query('apiSession') apiSession: string) {
     try {
-      console.log('apiSession: ', apiSession);
       const response = await this.breezeConnectService.getFunds(apiSession);
       return { success: true, data: response };
     } catch (error) {
